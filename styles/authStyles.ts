@@ -1,6 +1,11 @@
 import { StyleSheet } from "react-native"
 
 export const AuthStyles = StyleSheet.create({
+  safeAreaContainer: {
+    alignItems: 'center',
+    marginBottom: 40,
+    marginTop: 40
+  },
   mainContainer: {
     width: '90%',
     height: '100%',
@@ -8,7 +13,7 @@ export const AuthStyles = StyleSheet.create({
   title: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 18
+    fontSize: 20
   },
   subTitle: {
     textAlign: 'center',
@@ -50,7 +55,7 @@ export const AuthStyles = StyleSheet.create({
   },
   illustrationContainer: {
     width: '100%',
-    flex: 1
+    height: 400
   },
   illustrationImage: {
     height: '100%',
@@ -59,7 +64,7 @@ export const AuthStyles = StyleSheet.create({
   userSection: {
     rowGap: 25
   },
-  signInWithGoogle: {
+  signInWithGoogleContainer: {
     height:45,
     justifyContent:'center',
     alignItems:'center',
@@ -71,5 +76,13 @@ export const AuthStyles = StyleSheet.create({
   },
   emailSignIn: {
     gap:20
+  },
+  googleImage: {
+    height:50,
+    width:50
+  },
+  signInWithGoogleButton:{
+    flexDirection: 'row',
+    alignItems: 'center'
   }
 })
