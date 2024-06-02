@@ -1,15 +1,32 @@
-import { Pressable, Text, TextInput, View, Image, KeyboardAvoidingView } from 'react-native'
+import { Pressable, Text, TextInput, View, Image, ActivityIndicator, KeyboardAvoidingView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AuthStyles } from '@/styles/authStyles'
-import Auth from '@/components/Auth'
-import { FontAwesome } from '@expo/vector-icons';
+import useGoogleSignIn from '@/hooks/useGoogleSignIn'
+import { GoogleSignin } from '@react-native-google-signin/google-signin'
+import { useNavigationContainerRef } from 'expo-router'
 
 
 
 const index = () => {
+    const { data, loading, error, signInWithGoogle } = useGoogleSignIn();
+    const navigationRef = useNavigationContainerRef();
+
+    GoogleSignin.configure({
+        webClientId: '676507925916-oiu03mpr56hqev5j7730ptv0vq820a8a.apps.googleusercontent.com', // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
+    });
+    useEffect(() => {
+        if (data !== null) {
+            navigationRef.resetRoot({
+                index: 0,
+                routes: [{ name: 'home', params: { userData: data }, path: '/home' }]
+            })
+
+        }
+    }, [data])
+
     return (
-        <SafeAreaView style={{ alignItems: 'center', marginBottom: 40,marginTop:40 }}>
+        <KeyboardAvoidingView style={AuthStyles.safeAreaContainer}>
             <View style={AuthStyles.mainContainer}>
                 <View >
                     <Text style={AuthStyles.title}>Welcome to Self Diary</Text>
@@ -21,10 +38,11 @@ const index = () => {
                 <View style={AuthStyles.userSection}>
                     <View style={AuthStyles.emailSignIn}>
                         <TextInput style={AuthStyles.input}
-                            editable
+                            editable={!loading}
                             placeholder='johndoe@gmail.com'
+
                         />
-                        <Pressable style={AuthStyles.signInButton} className=''>
+                        <Pressable disabled={!loading} style={AuthStyles.signInButton} className=''>
                             <Text style={AuthStyles.signInText}>
                                 Sign in
                             </Text>
@@ -37,15 +55,22 @@ const index = () => {
                         <View style={AuthStyles.horizontalLine}></View>
                     </View>
 
-                    <Pressable style={AuthStyles.signInWithGoogle}>
-                        <Text>Sign in with Google</Text>
+                    <Pressable onPress={signInWithGoogle} style={AuthStyles.signInWithGoogleContainer}>
+                        {
+                            loading ? <ActivityIndicator /> :
+                                <View style={AuthStyles.signInWithGoogleButton}>
+                                    <Image style={AuthStyles.googleImage} resizeMode='contain' source={require("@/assets/images/googleicon.png")} />
+                                    <Text>Sign in with Google</Text>
+                                </View>
+                        }
+
                     </Pressable>
-                    
+
                 </View>
             </View>
 
 
-        </SafeAreaView>
+        </KeyboardAvoidingView>
     )
 }
 
