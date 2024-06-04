@@ -1,25 +1,29 @@
-import { Pressable, Text, TextInput, View, Image, ActivityIndicator, KeyboardAvoidingView } from 'react-native'
+import { Pressable, Text, TextInput, View, Image, ActivityIndicator, KeyboardAvoidingView, AppState } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { AuthStyles } from '@/styles/authStyles'
 import useGoogleSignIn from '@/hooks/useGoogleSignIn'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import { useNavigationContainerRef } from 'expo-router'
+import useEmailAuth from '@/hooks/useEmailAuth'
 
 
 
 const index = () => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const { data, loading, error, signInWithGoogle } = useGoogleSignIn();
+    const {error: emailError,loading: emailLoading,logInWithEmail} = useEmailAuth({email,password})
     const navigationRef = useNavigationContainerRef();
 
     GoogleSignin.configure({
         webClientId: '676507925916-oiu03mpr56hqev5j7730ptv0vq820a8a.apps.googleusercontent.com', // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
     });
     useEffect(() => {
-        if (data !== null) {
+        if (data !== null) {    
             navigationRef.resetRoot({
                 index: 0,
-                routes: [{ name: 'home', params: { userData: data }, path: '/home' }]
+                routes: [{ name: `home`, }]
             })
 
         }
@@ -40,9 +44,17 @@ const index = () => {
                         <TextInput style={AuthStyles.input}
                             editable={!loading}
                             placeholder='johndoe@gmail.com'
+                            onChangeText={(text) => setEmail(text) }
+                            value={email}
 
                         />
-                        <Pressable disabled={!loading} style={AuthStyles.signInButton} className=''>
+                         <TextInput style={AuthStyles.input}
+                            editable={!loading}
+                            placeholder='password'
+                            onChangeText={(text) => setPassword(text) }
+                            value={password}
+                        />
+                        <Pressable disabled={!loading || !emailLoading} onPress={logInWithEmail} style={AuthStyles.signInButton}>
                             <Text style={AuthStyles.signInText}>
                                 Sign in
                             </Text>
@@ -55,7 +67,7 @@ const index = () => {
                         <View style={AuthStyles.horizontalLine}></View>
                     </View>
 
-                    <Pressable onPress={signInWithGoogle} style={AuthStyles.signInWithGoogleContainer}>
+                    <Pressable disabled={emailLoading} onPress={signInWithGoogle} style={AuthStyles.signInWithGoogleContainer}>
                         {
                             loading ? <ActivityIndicator /> :
                                 <View style={AuthStyles.signInWithGoogleButton}>
