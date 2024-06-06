@@ -8,6 +8,7 @@ import Filter from '@/assets/svg/tuning.svg'
 import { HomeStyles } from '@/styles/homeStyles'
 import Refresh from '@/assets/svg/refresh.svg'
 import { AllNoteSection, TemplateSection, StickyNoteSection } from '@/components'
+import { PRIMARY_COLOR } from '@/constants/Colors'
 
 
 const tableHeadings = ['All', 'Sticky', "Templates"]
@@ -66,7 +67,7 @@ const Dashboard = () => {
         return <AllNoteSection />
       case "Sticky":
         return <StickyNoteSection />
-      case "Template":
+      case "Templates":
         return <TemplateSection />
     }
   }
@@ -87,19 +88,19 @@ const Dashboard = () => {
         <View style={HomeStyles.tableHeadingContainer}>
           {
             tableHeadings.map(heading => (<Pressable key={heading} onPress={() => setActiveTableHeading(heading)} style={[HomeStyles.tableHeadingButtons, heading === activeTableHeading ? HomeStyles.tableHeadingButtonActive : null]}><Text style={[HomeStyles.tableHeadingText, heading === activeTableHeading ? HomeStyles.tableHeadingTextActive : null]}>{heading}</Text>
-              {heading === "Templates" && (activeTableHeading === "Templates" ? <ArrowUp width={20} height={20} /> : <ArrowDown width={20} height={20} />)}</Pressable>))
+              {heading === "Templates" && (activeTableHeading === "Templates" ? <ArrowUp width={20} color={PRIMARY_COLOR} height={20} /> : <ArrowDown color={PRIMARY_COLOR} width={20} height={20} />)}</Pressable>))
           }
           <View style={HomeStyles.filterIconConntainer}>
             {
-              activeTableHeading === "Templates" ? <Refresh style={{ alignSelf: 'flex-end' }} width={25} height={25} /> :
-                <Filter style={{ alignSelf: 'flex-end' }} width={25} height={25} />
+              activeTableHeading === "Templates" ? <Refresh style={{ alignSelf: 'flex-end' }} color={PRIMARY_COLOR} width={25} height={25} /> :
+                <Filter style={{ alignSelf: 'flex-end' }} color={PRIMARY_COLOR} width={25} height={25} />
 
             }
           </View>
           <View style={HomeStyles.horizontalLine}></View>
         </View>
       </View>
-      <View>
+      <View style={{flex:1}}>
         {renderActiveSection()}
       </View>
     </View>
