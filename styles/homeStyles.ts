@@ -1,3 +1,4 @@
+import { HIGHLIGHT_GRAY_COLOR } from "@/constants/Colors";
 import { StyleSheet } from "react-native";
 
 export const DrawerStyles = StyleSheet.create({
@@ -8,6 +9,8 @@ export const DrawerStyles = StyleSheet.create({
     paddingRight: '5%'
   }
 })
+
+
 
 export const HomeStyles = StyleSheet.create({
   mainContainer: {
@@ -58,4 +61,33 @@ export const HomeStyles = StyleSheet.create({
     bottom:0
   }
 
+})
+
+
+export const SettingStyles = StyleSheet.create({
+  mainContainer: {
+    paddingLeft:'5%',
+    paddingRight: '5%',
+    backgroundColor:'white',
+    flex: 1
+  },
+  buttons: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  separator: {
+    width: '100%',
+    height: 1,
+    backgroundColor: HIGHLIGHT_GRAY_COLOR
+  },
+  mainTitle: {
+    fontWeight: 'bold',
+    fontSize: 25,
+    color: '#0E0213',
+    paddingBottom:10
+  },
+  contentContainer: {
+    rowGap: 10
+  }
 })
